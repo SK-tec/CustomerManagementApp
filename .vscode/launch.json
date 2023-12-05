@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-SpringbootBackendApplication<springboot_backend>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.ecorvi.springboot_backend.SpringbootBackendApplication",
+      "projectName": "springboot_backend",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
