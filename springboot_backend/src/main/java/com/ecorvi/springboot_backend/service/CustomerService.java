@@ -32,4 +32,12 @@ public class CustomerService {
     public void deleteEntity(Long id) {
         customerRepository.deleteById(id);
     }
+
+    public Customer updateCustomer(Long id, Customer customer) {
+        Customer existingCustomer = customerRepository.findById(id).orElse(null);;
+        existingCustomer.setFirstName(customer.getFirstName());
+        existingCustomer.setLastName(customer.getLastName());
+        existingCustomer.setEmail(customer.getEmail());
+       return customerRepository.save(existingCustomer);
+    }
 }

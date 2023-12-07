@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ecorvi.springboot_backend.model.Customer;
 import com.ecorvi.springboot_backend.service.CustomerService;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @CrossOrigin(
     origins = {
@@ -50,6 +52,12 @@ public class CustomerController {
     @PostMapping
     public Customer createCustomer(@RequestBody Customer customer){
         return customerService.saveEntity(customer);
+    }
+    @PutMapping("/{id}")
+    public Customer updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+        Customer updated_customer=customerService.updateCustomer(id,customer);
+        
+        return updated_customer;
     }
     @DeleteMapping("/{id}")
     public void deleteCustomer(@PathVariable Long id){
