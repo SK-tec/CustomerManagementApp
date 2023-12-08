@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import AddNewCustomerModal from "./AddNewCustomerModal";
+
 const CustomerList = () => {
   const [customerList, setCustomerList] = useState([]);
   const [editedRecord, setEditedRecord] = useState({});
   const [currentlyEditingId, setCurrentlyEditingId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     axios
@@ -16,6 +19,8 @@ const CustomerList = () => {
         console.log(err);
       });
   }, []);
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   const handleEditClick = (customerId) => {
     setCurrentlyEditingId(customerId);
@@ -30,6 +35,13 @@ const CustomerList = () => {
       .put(`http://localhost:8080/api/customers/${id}`, editedRecord)
       .then((res) => {
         console.log(res.data);
+        // Update the existing record in the customerList array
+        setCustomerList((prevCustomerList) =>
+          prevCustomerList.map((customer) =>
+            customer.id === id ? { ...customer, ...res.data } : customer
+          )
+        );
+
         setCurrentlyEditingId(null);
         // Reset editedRecord after saving
         setEditedRecord({});
@@ -46,21 +58,36 @@ const CustomerList = () => {
       [name]: value,
     }));
   };
+
   const handleDelete = (id) => {
     axios.delete(`http://localhost:8080/api/customers/${id}`);
     console.log(id);
   };
+  const handleAddCustomer = (newCustomer) => {
+    // Add newCustomer to the customerList
+    setCustomerList((prevCustomerList) => [...prevCustomerList, newCustomer]);
+  };
   return (
     <>
       <div className="container table-responsive-lg">
-        <table className="table table-bordered">
-          <thead>
+        <table className="table table-bordered table-striped">
+          <thead className="table-dark">
             <tr>
-              <th scope="col">Customer Id</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Email Id</th>
-              <th scope="col">Actions</th>
+              <th scope="col" className="text-warning">
+                Customer Id
+              </th>
+              <th scope="col" className="text-warning">
+                First Name
+              </th>
+              <th scope="col" className="text-warning">
+                Last Name
+              </th>
+              <th scope="col" className="text-warning">
+                Email Id
+              </th>
+              <th scope="col" className="text-warning">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -71,7 +98,7 @@ const CustomerList = () => {
                   {currentlyEditingId === customer.id ? (
                     <input
                       type="text"
-                      defaultValue={customer.firstName}
+                      value={editedRecord.firstName}
                       name="firstName"
                       onChange={onInputChange}
                     />
@@ -84,7 +111,7 @@ const CustomerList = () => {
                     <input
                       type="text"
                       name="lastName"
-                      defaultValue={customer.lastName}
+                      value={editedRecord.lastName}
                       onChange={onInputChange}
                     />
                   ) : (
@@ -96,7 +123,7 @@ const CustomerList = () => {
                     <input
                       type="text"
                       name="email"
-                      defaultValue={customer.email}
+                      value={editedRecord.email}
                       onChange={onInputChange}
                     />
                   ) : (
@@ -104,27 +131,37 @@ const CustomerList = () => {
                   )}
                 </td>
                 <td>
-                  {currentlyEditingId === customer.id ? (
+                  <div className="row">
+                    {currentlyEditingId === customer.id ? (
+                      <i
+                        className="col-5 btn bi bi-save"
+                        onClick={() => handleSaveClick(customer.id)}
+                      ></i>
+                    ) : (
+                      <i
+                        className="col-5 btn bi-pencil-square"
+                        onClick={() => handleEditClick(customer.id)}
+                      ></i>
+                    )}
                     <i
-                      className="col btn bi bi-save"
-                      onClick={() => handleSaveClick(customer.id)}
+                      className="col-5 btn bi-trash"
+                      onClick={() => handleDelete(customer.id)}
                     ></i>
-                  ) : (
-                    <i
-                      className="col btn bi-pencil-square"
-                      onClick={() => handleEditClick(customer.id)}
-                    ></i>
-                  )}
-                  <i
-                    className="col btn bi-trash"
-                    onClick={() => handleDelete(customer.id)}
-                  ></i>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <div className="btn btn-warning m-3" onClick={handleShowModal}>
+        Add Customer
+      </div>
+      <AddNewCustomerModal
+        show={showModal}
+        handleClose={handleCloseModal}
+        handleAddCustomer={handleAddCustomer}
+      />
     </>
   );
 };

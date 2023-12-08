@@ -16,19 +16,19 @@ import com.ecorvi.springboot_backend.service.CustomerService;
 import org.springframework.web.bind.annotation.PutMapping;
 
 
-@CrossOrigin(
-    origins = {
-        "http://localhost:3000",        
-        },
-    methods = {
-                RequestMethod.OPTIONS,
-                RequestMethod.GET,
-                RequestMethod.PUT,
-                RequestMethod.DELETE,
-                RequestMethod.POST
-})
+// @CrossOrigin(
+//     origins = {
+//         "http://localhost:3000",        
+//         },
+//     methods = {
+//                 RequestMethod.OPTIONS,
+//                 RequestMethod.GET,
+//                 RequestMethod.PUT,
+//                 RequestMethod.DELETE,
+//                 RequestMethod.POST
+// })
 
-//@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE}, allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 
 @RestController
 @RequestMapping("/api/customers")

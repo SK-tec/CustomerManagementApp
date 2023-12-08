@@ -1,27 +1,36 @@
 import "./App.css";
-//import React, { useState, useEffect } from "react";
 import CusomerList from "./components/CustomerList";
+import avatar from "./components/images/customersavatar.png";
 function App() {
-  // const [customers, setCustomers] = useState([]);
-  // useEffect(() => {
-  //   fetch("http://localhost:8080/api/customers")
-  //     .then((response) => response.json())
-  //     .then((data) => setCustomers(data))
-  //     .catch((error) => console.error("Error fetching customers:", error));
-  // }, []);
   return (
     <div className="App">
-      <h1 className="text-center text-warning">Customer Service App</h1>
-      <h2>Customer's List</h2>
+      <div className="text-center">
+        <div
+          className="col-12"
+          style={{ position: "relative", display: "inline-block" }}
+        >
+          <img
+            src={avatar}
+            alt="Customer Service App"
+            style={{ width: "100%" }}
+          />
+          <h1
+            style={{
+              position: "absolute",
+              top: "10%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              color: "white",
+            }}
+            className="text-warning"
+          >
+            Customer Service App
+          </h1>
+        </div>
+      </div>
+
+      <h2 className="text-success m-4">Customer's List</h2>
       <CusomerList />
-      {/* <ul>
-        {customers.map((customer) => (
-          <li key={customer.id}>
-            Name: {customer.firstName}
-            {customer.lastName} - Email: {customer.email}
-          </li>
-        ))}
-      </ul> */}
     </div>
   );
 }
